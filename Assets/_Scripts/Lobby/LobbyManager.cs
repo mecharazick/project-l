@@ -26,6 +26,13 @@ namespace AlphaLobby.Managers
 
         // private LobbyManager() { }
         // #endregion
+        
+        [SerializeField]
+        private Lobby _hostedLobby;
+
+        [SerializeField]
+        private Lobby _joinedLobby;
+
         public enum LobbyAvailability
         {
             Public = 0,

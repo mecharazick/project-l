@@ -6,13 +6,33 @@ namespace AlphaLobby
 {
     public class ManagerUI : MonoBehaviour
     {
-        public void OpenGUI()
+
+        [SerializeField]
+        [Tooltip("Define as telas exibidas durante o fluxo de criação dos Lobbies e ativa a primeira tela da lista")]
+        private List<GameObject> _screens;
+
+        private void Start()
         {
-            this.gameObject.SetActive(true);
+            int i = 0;
+
+            foreach (GameObject screen in _screens)
+            {
+                CloseGUI(screen);
+                if (i == 0)
+                {
+                    OpenGUI(screen);
+                }
+                i++;
+            }
         }
-        public void CloseGUI()
+
+        public void OpenGUI(GameObject gui)
         {
-            this.gameObject.SetActive(false);
+            gui.SetActive(true);
+        }
+        public void CloseGUI(GameObject gui)
+        {
+            gui.SetActive(false);
         }
     }
 }

@@ -17,20 +17,13 @@ namespace AlphaLobby
         public string Username
         {
             get { return _username; }
-            protected set { _username = Username; }
         }
-
-        [SerializeField]
-        protected string _hostedLobbyId;
-
-        [SerializeField]
-        protected string _joinedLobbyId;
 
         #endregion
 
         public void UpdateUsername(string s)
         {
-            Username = s;
+            _username = s;
         }
 
         protected async void Start()
