@@ -420,8 +420,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _username: 
-  _hostedLobbyId: 
-  _joinedLobbyId: 
 --- !u!1 &194384661
 GameObject:
   m_ObjectHideFlags: 0
