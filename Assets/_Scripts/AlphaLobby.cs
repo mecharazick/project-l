@@ -2,15 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Services.Core;
-using Unity.Services.Lobbies;
-using Unity.Services.Lobbies.Models;
+using Unity.Services.Authentication;
 
 namespace AlphaLobby
 {
     public class AlphaLobby : MonoBehaviour
     {
         #region Lobby State
-        
+
         [SerializeField]
         [Tooltip("Armazena o nome de tela deste usuário")]
         private string _username;
@@ -28,8 +27,19 @@ namespace AlphaLobby
 
         protected async void Start()
         {
-            // Instance = this;
             await UnityServices.InitializeAsync();
+            try
+            {
+                await AuthenticationService.Instance.SignInAnonymouslyAsync();
+            }
+            catch (AuthenticationException e)
+            {
+                Debug.LogError(e);
+            }
+            finally
+            {
+                Debug.Log("Did SignIn Succesfullly? " + AuthenticationService.Instance.IsSignedIn);
+            }
         }
     }
 }

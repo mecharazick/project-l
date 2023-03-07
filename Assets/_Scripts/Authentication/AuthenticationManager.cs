@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Unity.Services.Core;
 using Unity.Services.Authentication;
 
 namespace AlphaLobby.Managers
@@ -24,7 +23,12 @@ namespace AlphaLobby.Managers
         // private AuthenticationManager() { }
         // #endregion
 
-        public async void AuthenticateGuest(string username)
+        private void Start()
+        {
+            // AuthenticateGuest();
+        }
+
+        public async void AuthenticateGuest()
         {
             await AuthenticationService.Instance.SignInAnonymouslyAsync();
         }

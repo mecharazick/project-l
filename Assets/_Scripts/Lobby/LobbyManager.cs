@@ -26,12 +26,14 @@ namespace AlphaLobby.Managers
 
         // private LobbyManager() { }
         // #endregion
-        
+
         [SerializeField]
         private Lobby _hostedLobby;
 
         [SerializeField]
         private Lobby _joinedLobby;
+
+        private float heartbeatTimer = 0f;
 
         public enum LobbyAvailability
         {
@@ -39,17 +41,28 @@ namespace AlphaLobby.Managers
             Private = 1
         };
 
-        private void Start(){
-            Debug.Log(GameObject.Find("AlphaLobby").GetComponent<AlphaLobby>());   
+        private void Start()
+        {
+            Debug.Log(GameObject.Find("AlphaLobby").GetComponent<AlphaLobby>());
+        }
+
+        private void Update()
+        {
+            HandleLobbyHeartbeat();
         }
 
         #region LobbyCreation
-        private void CreateLobby(string lobbyName, int maxPlayers)
+        public void CreateLobby()
+        {
+            CreateLobby("default", 4);
+        }
+
+        public void CreateLobby(string lobbyName, int maxPlayers)
         {
             CreateLobby(lobbyName, maxPlayers, null);
         }
 
-        private void CreateLobby(
+        public void CreateLobby(
             string lobbyName,
             int maxPlayers,
             Dictionary<string, DataObject> data
@@ -58,14 +71,14 @@ namespace AlphaLobby.Managers
             CreateLobby(lobbyName, maxPlayers, LobbyAvailability.Public, data);
         }
 
-        private async void CreateLobby(
+        public async void CreateLobby(
             string lobbyName,
             int maxPlayers,
             LobbyAvailability lobbyAvailability,
             Dictionary<string, DataObject> data
         )
         {
-            await LobbyService.Instance.CreateLobbyAsync(
+            Lobby lobby = await LobbyService.Instance.CreateLobbyAsync(
                 lobbyName,
                 maxPlayers,
                 new CreateLobbyOptions
@@ -77,11 +90,26 @@ namespace AlphaLobby.Managers
                     Data = data
                 }
             );
+            _joinedLobby = lobby;
+            _hostedLobby = _joinedLobby;
+        }
+
+        private async void HandleLobbyHeartbeat()
+        {
+            if(heartbeatTimer < 0){
+                if (_hostedLobby != null)
+                {
+                    await LobbyService.Instance.GetLobbyAsync(_hostedLobby.Id);
+                }
+                float heartbeatTimerMax = 1.1f;
+                heartbeatTimer = heartbeatTimerMax;
+            } else {
+                heartbeatTimer -= Time.deltaTime;
+            }
         }
         #endregion
-        
+
         #region LobbyUpdate
-        
         #endregion
     };
 }
