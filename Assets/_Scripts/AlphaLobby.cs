@@ -27,10 +27,11 @@ namespace AlphaLobby
 
         protected async void Start()
         {
-            await UnityServices.InitializeAsync();
             try
             {
+                await UnityServices.InitializeAsync();
                 await AuthenticationService.Instance.SignInAnonymouslyAsync();
+                Debug.Log("AlphaLobby: Habilitado");
             }
             catch (AuthenticationException e)
             {

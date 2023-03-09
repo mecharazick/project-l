@@ -33,6 +33,8 @@ namespace AlphaLobby.Managers
         [SerializeField]
         private Lobby _joinedLobby;
 
+        private List<Lobby> _availableLobbies;
+
         private float heartbeatTimer = 0f;
 
         public enum LobbyAvailability
@@ -40,11 +42,6 @@ namespace AlphaLobby.Managers
             Public = 0,
             Private = 1
         };
-
-        private void Start()
-        {
-            Debug.Log(GameObject.Find("AlphaLobby").GetComponent<AlphaLobby>());
-        }
 
         private void Update()
         {
@@ -78,38 +75,63 @@ namespace AlphaLobby.Managers
             Dictionary<string, DataObject> data
         )
         {
+            CreateLobbyOptions options = new CreateLobbyOptions();
+            options.IsPrivate =
+                (lobbyAvailability & LobbyAvailability.Private) == LobbyAvailability.Private;
+            options.Player = new Player(AuthenticationService.Instance.PlayerId);
+            options.Data = data;
             Lobby lobby = await LobbyService.Instance.CreateLobbyAsync(
                 lobbyName,
                 maxPlayers,
-                new CreateLobbyOptions
-                {
-                    IsPrivate =
-                        (lobbyAvailability & LobbyAvailability.Private)
-                        == LobbyAvailability.Private,
-                    Player = new Player(AuthenticationService.Instance.PlayerId),
-                    Data = data
-                }
+                options
             );
             _joinedLobby = lobby;
             _hostedLobby = _joinedLobby;
         }
 
+        public async void ListLobbies()
+        {
+            List<Lobby> lobbies;
+            try
+            {
+                lobbies = (await LobbyService.Instance.QueryLobbiesAsync()).Results;
+                this._availableLobbies = lobbies;
+                foreach (Lobby lobby in lobbies)
+                {
+                    Debug.Log(lobby.Name + " " + lobby.MaxPlayers);
+                }
+            }
+            catch (LobbyServiceException e)
+            {
+                Debug.LogError(e);
+            }
+        }
+
         private async void HandleLobbyHeartbeat()
         {
-            if(heartbeatTimer < 0){
+            if (heartbeatTimer < 0)
+            {
                 if (_hostedLobby != null)
                 {
                     await LobbyService.Instance.GetLobbyAsync(_hostedLobby.Id);
                 }
-                float heartbeatTimerMax = 1.1f;
+                float heartbeatTimerMax = 15 * 60f;
                 heartbeatTimer = heartbeatTimerMax;
-            } else {
+            }
+            else
+            {
                 heartbeatTimer -= Time.deltaTime;
             }
         }
         #endregion
 
         #region LobbyUpdate
+
+        public async void UpdateLobby()
+        {
+            UpdateLobbyOptions options = new UpdateLobbyOptions();
+            Lobby lobby = await LobbyService.Instance.UpdateLobbyAsync(_hostedLobby.Id, options);
+        }
         #endregion
     };
 }
