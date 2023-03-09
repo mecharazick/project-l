@@ -119,8 +119,8 @@ MonoBehaviour:
     y: 0
     width: 485
     height: 947
-  m_MinSize: {x: 276, y: 71}
-  m_MaxSize: {x: 4001, y: 4021}
+  m_MinSize: {x: 275, y: 50}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 14}
   m_Panes:
   - {fileID: 14}
@@ -398,9 +398,9 @@ MonoBehaviour:
       m_ResourceFile: 
   m_AssetTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 726f0000
+    m_SelectedIDs: fef8ffff
     m_LastClickedID: 0
-    m_ExpandedIDs: ffffffff00000000287200002a7200002c7200002e720000
+    m_ExpandedIDs: ffffffff00000000287200002c7200002e720000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -425,8 +425,8 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
   m_ListAreaState:
-    m_SelectedInstanceIDs: 726f0000
-    m_LastClickedInstanceID: 28530
+    m_SelectedInstanceIDs: fef8ffff
+    m_LastClickedInstanceID: -1794
     m_HadKeyboardFocusLastEvent: 0
     m_ExpandedInstanceIDs: c6230000
     m_RenameOverlay:
@@ -540,23 +540,23 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 1}
-      m_SelectedIDs: 
-      m_LastClickedID: 0
+      m_SelectedIDs: ea6e0000
+      m_LastClickedID: 28394
       m_ExpandedIDs: 28fbffff0e6e0000ea6e00009e6f0000
       m_RenameOverlay:
         m_UserAcceptedRename: 0
-        m_Name: LobbyListManagerUI
-        m_OriginalName: LobbyListManagerUI
+        m_Name: 
+        m_OriginalName: 
         m_EditFieldRect:
           serializedVersion: 2
           x: 0
           y: 0
           width: 0
           height: 0
-        m_UserData: 28574
+        m_UserData: 0
         m_IsWaitingForDelay: 0
         m_IsRenaming: 0
-        m_OriginalEventType: 0
+        m_OriginalEventType: 11
         m_IsRenamingFilename: 0
         m_ClientGUIView: {fileID: 2}
       m_SearchString: 
@@ -922,9 +922,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 960, y: 540, z: 0}
+    m_Target: {x: 781.5408, y: 539.08264, z: 1.282577}
     speed: 2
-    m_Value: {x: 960, y: 540, z: 0}
+    m_Value: {x: 781.5408, y: 539.08264, z: 1.282577}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -974,9 +974,9 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: 0, y: 0, z: 0, w: 1}
   m_Size:
-    m_Target: 1101.4536
+    m_Target: 600.4664
     speed: 2
-    m_Value: 1101.4536
+    m_Value: 600.4664
   m_Ortho:
     m_Target: 1
     speed: 2
