@@ -33,7 +33,7 @@ namespace AlphaLobby.Managers
         [SerializeField]
         private Lobby _joinedLobby;
 
-        private List<Lobby> _availableLobbies;
+        public List<Lobby> _availableLobbies;
 
         private float heartbeatTimer = 0f;
 
@@ -78,7 +78,19 @@ namespace AlphaLobby.Managers
             CreateLobbyOptions options = new CreateLobbyOptions();
             options.IsPrivate =
                 (lobbyAvailability & LobbyAvailability.Private) == LobbyAvailability.Private;
-            options.Player = new Player(AuthenticationService.Instance.PlayerId);
+            options.Player = new Player(
+                id: AuthenticationService.Instance.PlayerId,
+                data: new Dictionary<string, PlayerDataObject>()
+                {
+                    {
+                        "PlayerName",
+                        new PlayerDataObject(
+                            visibility: PlayerDataObject.VisibilityOptions.Member,
+                            value: GameObject.Find("AlphaLobby").GetComponent<AlphaLobby>().Username
+                        )
+                    }
+                }
+            );
             options.Data = data;
             Lobby lobby = await LobbyService.Instance.CreateLobbyAsync(
                 lobbyName,
@@ -96,9 +108,10 @@ namespace AlphaLobby.Managers
             {
                 lobbies = (await LobbyService.Instance.QueryLobbiesAsync()).Results;
                 this._availableLobbies = lobbies;
+                Debug.Log("Found " + lobbies.Count + " available lobbies");
                 foreach (Lobby lobby in lobbies)
                 {
-                    Debug.Log(lobby.Name + " " + lobby.MaxPlayers);
+                    Debug.Log(lobby.Name + " " + lobby.Id);
                 }
             }
             catch (LobbyServiceException e)
