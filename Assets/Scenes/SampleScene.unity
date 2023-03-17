@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028334, g: 0.22571328, b: 0.3069217, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -979,12 +979,12 @@ RectTransform:
   - {fileID: 14384776}
   - {fileID: 1288517291}
   - {fileID: 1275358587}
-  m_Father: {fileID: 1447920521}
+  m_Father: {fileID: 1633918156}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 389.5}
+  m_AnchoredPosition: {x: 0, y: 364}
   m_SizeDelta: {x: 1739.9999, y: 90}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &219320108
@@ -1069,6 +1069,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d665a2bf376707c46b002ea59d95e758, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onLobbyListFinishFetchEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &308034415
 GameObject:
   m_ObjectHideFlags: 0
@@ -2009,7 +2012,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1894108500}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: AlphaLobby.UI.LobbyCreateModal, Assembly-CSharp
         m_MethodName: ConfirmLobbyCreation
         m_Mode: 1
@@ -2191,9 +2194,9 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1894108500}
-        m_TargetAssemblyTypeName: AlphaLobby.UI.LobbyCreateModal, Assembly-CSharp
-        m_MethodName: ChangeLobbyName
+      - m_Target: {fileID: 1633918159}
+        m_TargetAssemblyTypeName: AlphaLobby.UI.LobbyManagerUI, Assembly-CSharp
+        m_MethodName: HandleChangeLobbyName
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4434,7 +4437,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 2076179421}
   m_Direction: 2
   m_Value: 0
-  m_Size: 1
+  m_Size: 0.5
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -5081,7 +5084,6 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 219320107}
   - {fileID: 434455868}
   - {fileID: 1492669318}
   - {fileID: 1308460303}
@@ -5108,7 +5110,7 @@ MonoBehaviour:
   m_Content: {fileID: 1909815927}
   m_Horizontal: 0
   m_Vertical: 1
-  m_MovementType: 0
+  m_MovementType: 2
   m_Elasticity: 0.1
   m_Inertia: 1
   m_DecelerationRate: 0.135
@@ -5456,8 +5458,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1574415298}
   m_HandleRect: {fileID: 1574415297}
   m_Direction: 0
-  m_Value: 0.5
-  m_Size: 0.9994199
+  m_Value: 0
+  m_Size: 0.9997099
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -6325,6 +6327,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 219320107}
   - {fileID: 1447920521}
   - {fileID: 1952700930}
   - {fileID: 1608068736}
@@ -6387,10 +6390,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f12f344c0d155b478d512776dbca566, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _lobbyTable: {fileID: 0}
-  _tableRow: {fileID: 0}
-  _lobbyCode: {fileID: 0}
-  _joinLobbyButton: {fileID: 0}
+  _lobbyManager: {fileID: 241199879}
+  _lobbyTable: {fileID: 1909815926}
+  _tableRow: {fileID: 7788487037160913401, guid: 9b70b57c2564db641b2fef77174a5cd0,
+    type: 3}
+  _joinLobbyButton: {fileID: 709486270}
+  _confirmLobbyCreateButton: {fileID: 554027725}
 --- !u!1 &1671488820
 GameObject:
   m_ObjectHideFlags: 0
@@ -7178,9 +7183,9 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1894108500}
-        m_TargetAssemblyTypeName: AlphaLobby.UI.LobbyCreateModal, Assembly-CSharp
-        m_MethodName: ChangeMaxPlayers
+      - m_Target: {fileID: 1633918159}
+        m_TargetAssemblyTypeName: AlphaLobby.UI.LobbyManagerUI, Assembly-CSharp
+        m_MethodName: HandleChangeMaxPlayers
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -7831,7 +7836,6 @@ GameObject:
   - component: {fileID: 1894108497}
   - component: {fileID: 1894108499}
   - component: {fileID: 1894108498}
-  - component: {fileID: 1894108500}
   m_Layer: 5
   m_Name: LobbyCreateModal
   m_TagString: Untagged
@@ -7902,19 +7906,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1894108496}
   m_CullTransparentMesh: 1
---- !u!114 &1894108500
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1894108496}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f26a36f9b0d5f514e872df6b80c39cc4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _lobbyManager: {fileID: 241199879}
 --- !u!1 &1909815926
 GameObject:
   m_ObjectHideFlags: 0
@@ -7924,6 +7915,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1909815927}
+  - component: {fileID: 1909815928}
   m_Layer: 5
   m_Name: Content
   m_TagString: Untagged
@@ -7948,9 +7940,35 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1724, y: 400}
+  m_AnchoredPosition: {x: 0.25, y: 0}
+  m_SizeDelta: {x: 1723.5, y: 672}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1909815928
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1909815926}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59f8146938fff824cb5fd77236b75775, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 0
+  m_Spacing: 0
+  m_ChildForceExpandWidth: 1
+  m_ChildForceExpandHeight: 0
+  m_ChildControlWidth: 1
+  m_ChildControlHeight: 0
+  m_ChildScaleWidth: 0
+  m_ChildScaleHeight: 0
+  m_ReverseArrangement: 0
 --- !u!1 &1919472849
 GameObject:
   m_ObjectHideFlags: 0
@@ -8034,7 +8052,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1919472852}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1894108496}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1919472852
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8174,52 +8204,16 @@ MonoBehaviour:
   m_CharacterLimit: 0
   m_OnEndEdit:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: AlphaLobby.UsernameInput, Assembly-CSharp
-        m_MethodName: OnEndEdit
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   m_OnSubmit:
     m_PersistentCalls:
       m_Calls: []
   m_OnSelect:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: AlphaLobby.UsernameInput, Assembly-CSharp
-        m_MethodName: OnSelect
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   m_OnDeselect:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: AlphaLobby.UsernameInput, Assembly-CSharp
-        m_MethodName: OnDeselect
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   m_OnTextSelection:
     m_PersistentCalls:
       m_Calls: []
@@ -8229,9 +8223,9 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: AlphaLobby.UsernameInput, Assembly-CSharp
-        m_MethodName: OnValueChanged
+      - m_Target: {fileID: 1633918159}
+        m_TargetAssemblyTypeName: AlphaLobby.UI.LobbyListManagerUI, Assembly-CSharp
+        m_MethodName: HandleLobbyCodeChange
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

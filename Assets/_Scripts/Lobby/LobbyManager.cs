@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using Unity.Services.Core;
 using Unity.Services.Authentication;
 using Unity.Services.Lobbies;
@@ -26,6 +27,7 @@ namespace AlphaLobby.Managers
 
         // private LobbyManager() { }
         // #endregion
+        public UnityEvent onLobbyListFinishFetchEvent = new UnityEvent();
 
         [SerializeField]
         private Lobby _hostedLobby;
@@ -33,9 +35,9 @@ namespace AlphaLobby.Managers
         [SerializeField]
         private Lobby _joinedLobby;
 
-        public List<Lobby> _availableLobbies;
+        private float _heartbeatTimer = 0f;
 
-        private float heartbeatTimer = 0f;
+        public List<Lobby> availableLobbies;
 
         public enum LobbyAvailability
         {
@@ -107,11 +109,12 @@ namespace AlphaLobby.Managers
             try
             {
                 lobbies = (await LobbyService.Instance.QueryLobbiesAsync()).Results;
-                this._availableLobbies = lobbies;
+                availableLobbies = lobbies;
+                onLobbyListFinishFetchEvent.Invoke();
                 Debug.Log("Found " + lobbies.Count + " available lobbies");
                 foreach (Lobby lobby in lobbies)
                 {
-                    Debug.Log(lobby.Name + " " + lobby.Id);
+                    Debug.Log(lobby.Name + " " + lobby.LobbyCode);
                 }
             }
             catch (LobbyServiceException e)
@@ -122,18 +125,18 @@ namespace AlphaLobby.Managers
 
         private async void HandleLobbyHeartbeat()
         {
-            if (heartbeatTimer < 0)
+            if (_heartbeatTimer < 0)
             {
                 if (_hostedLobby != null)
                 {
                     await LobbyService.Instance.GetLobbyAsync(_hostedLobby.Id);
                 }
                 float heartbeatTimerMax = 15 * 60f;
-                heartbeatTimer = heartbeatTimerMax;
+                _heartbeatTimer = heartbeatTimerMax;
             }
             else
             {
-                heartbeatTimer -= Time.deltaTime;
+                _heartbeatTimer -= Time.deltaTime;
             }
         }
         #endregion
@@ -148,7 +151,7 @@ namespace AlphaLobby.Managers
         #endregion
 
         #region
-        public async void JoinLobby(string lobbyCode)
+        public async void JoinLobbyByCode(string lobbyCode)
         {
             try
             {
