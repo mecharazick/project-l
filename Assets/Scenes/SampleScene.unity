@@ -458,8 +458,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1633918159}
-        m_TargetAssemblyTypeName: LobbyListManagerUI, Assembly-CSharp
-        m_MethodName: SpawnRow
+        m_TargetAssemblyTypeName: AlphaLobby.UI.LobbyManagerUI, Assembly-CSharp
+        m_MethodName: SpawnTableRow
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

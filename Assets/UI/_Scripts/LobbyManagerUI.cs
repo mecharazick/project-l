@@ -99,10 +99,11 @@ namespace AlphaLobby.UI
                 _lobbyTable.transform.rotation,
                 _lobbyTable.transform
             );
+            int connectedPlayers = lobby.MaxPlayers - lobby.AvailableSlots;
             var rowText = clone.GetComponentsInChildren<TextMeshProUGUI>();
             rowText[0].text = lobby.Name;
             rowText[1].text = "host";
-            rowText[2].text = (lobby.Players).ToString() + "/" + lobby.MaxPlayers;
+            rowText[2].text = (connectedPlayers).ToString() + "/" + lobby.MaxPlayers;
         }
     }
 }
