@@ -86,7 +86,7 @@ namespace AlphaLobby.Managers
                         "PlayerName",
                         new PlayerDataObject(
                             visibility: PlayerDataObject.VisibilityOptions.Member,
-                            value: GameObject.Find("AlphaLobby").GetComponent<AlphaLobby>().Username
+                            value: AlphaLobby.Username
                         )
                     }
                 }
@@ -144,6 +144,20 @@ namespace AlphaLobby.Managers
         {
             UpdateLobbyOptions options = new UpdateLobbyOptions();
             Lobby lobby = await LobbyService.Instance.UpdateLobbyAsync(_hostedLobby.Id, options);
+        }
+        #endregion
+
+        #region
+        public async void JoinLobby(string lobbyCode)
+        {
+            try
+            {
+                _joinedLobby = await LobbyService.Instance.JoinLobbyByCodeAsync(lobbyCode);
+            }
+            catch (LobbyServiceException exception)
+            {
+                Debug.LogError(exception);
+            }
         }
         #endregion
     };

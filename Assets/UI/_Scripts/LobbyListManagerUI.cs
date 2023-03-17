@@ -1,28 +1,36 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LobbyListManagerUI : MonoBehaviour
 {
     [SerializeField]
     [Tooltip("Referencia o componente que receberá a lista de lobbies")]
-    private GameObject LobbyTable;
+    private GameObject _lobbyTable;
 
     [SerializeField]
-    private GameObject TableRow;
+    private GameObject _tableRow;
+    [SerializeField]
+    private Text _lobbyCode;
+
+    [SerializeField]
+    [Tooltip("Botão de se juntar ao Lobby")]
+    private Button _joinLobbyButton;
+
+    public void Start(){
+        _joinLobbyButton.onClick.AddListener(() => {
+            
+        });
+    }
 
     public void SpawnRow(string lobbyName, string lobbyHost, string lobbyPlayers)
     {
         GameObject clone = Instantiate(
-            TableRow,
-            new Vector3(LobbyTable.transform.position.x, LobbyTable.transform.position.y, 0),
+            _tableRow,
+            _lobbyTable.transform.position,
             Quaternion.identity,
-            LobbyTable.transform
+            _lobbyTable.transform
         );
-    }
-
-    private float GetHeight(Transform gObject)
-    {
-        return ((RectTransform)gObject.transform).rect.height;
     }
 }

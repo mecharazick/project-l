@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Services;
+using Unity.Services.Core;
 using Unity.Services.Authentication;
 
 namespace AlphaLobby.Managers
@@ -23,14 +25,33 @@ namespace AlphaLobby.Managers
         // private AuthenticationManager() { }
         // #endregion
 
-        private void Start()
+        static public async void Authenticate()
         {
-            // AuthenticateGuest();
-        }
+            try
+            {
+                if (AlphaLobby.Username == string.Empty)
+                {
+                    throw new System.Exception("User must provide a name");
+                }
+                Debug.Log("Authenticating user: " + AlphaLobby.Username);
 
-        public async void AuthenticateGuest()
-        {
-            await AuthenticationService.Instance.SignInAnonymouslyAsync();
+                InitializationOptions initializationOptions = new InitializationOptions();
+
+                initializationOptions.SetProfile(AlphaLobby.Username);
+
+                await UnityServices.InitializeAsync(initializationOptions);
+
+                AuthenticationService.Instance.SignedIn += () =>
+                {
+                    Debug.Log("Signed In!" + AuthenticationService.Instance.PlayerId);
+                };
+
+                await AuthenticationService.Instance.SignInAnonymouslyAsync();
+            }
+            catch (AuthenticationException exception)
+            {
+                Debug.LogError(exception);
+            }
         }
     }
 }

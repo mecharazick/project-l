@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.Services.Core;
 using Unity.Services.Authentication;
+using AlphaLobby.Managers;
 
 namespace AlphaLobby
 {
@@ -12,35 +13,31 @@ namespace AlphaLobby
 
         [SerializeField]
         [Tooltip("Armazena o nome de tela deste usuário")]
-        private string _username;
-        public string Username
+        static private string _username;
+        static public string Username
         {
             get { return _username; }
         }
 
         #endregion
+        [SerializeField]
+        static private LobbyManager _lobbyManager;
 
-        public void UpdateUsername(string s)
+        static public LobbyManager LobbyManager
         {
-            _username = s;
+            get { return _lobbyManager; }
+        }
+        
+        static private AuthenticationManager _authenticationManager;
+
+        static public AuthenticationManager AuthenticationManager
+        {
+            get { return _authenticationManager; }
         }
 
-        protected async void Start()
+        static public void UpdateUsername(string s)
         {
-            try
-            {
-                await UnityServices.InitializeAsync();
-                await AuthenticationService.Instance.SignInAnonymouslyAsync();
-                Debug.Log("AlphaLobby: Habilitado");
-            }
-            catch (AuthenticationException e)
-            {
-                Debug.LogError(e);
-            }
-            finally
-            {
-                Debug.Log("Did SignIn Succesfullly? " + AuthenticationService.Instance.IsSignedIn);
-            }
+            _username = s;
         }
     }
 }
