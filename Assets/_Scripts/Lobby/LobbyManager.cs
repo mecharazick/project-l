@@ -114,7 +114,7 @@ namespace AlphaLobby.Managers
                 Debug.Log("Found " + lobbies.Count + " available lobbies");
                 foreach (Lobby lobby in lobbies)
                 {
-                    Debug.Log(lobby.Name + " " + lobby.LobbyCode);
+                    Debug.Log(lobby.Name + ", Code: " + lobby.LobbyCode);
                 }
             }
             catch (LobbyServiceException e)
