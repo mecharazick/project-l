@@ -1,11 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using Unity.Services.Lobbies;
 using Unity.Services.Lobbies.Models;
-using AlphaLobby;
 using AlphaLobby.Managers;
+using TMPro;
 
 namespace AlphaLobby.UI
 {
@@ -26,12 +23,11 @@ namespace AlphaLobby.UI
         private Button _joinLobbyButton;
 
         private string _lobbyCode;
-        
+
         public void HandleLobbyCodeChange(string s)
         {
             _lobbyCode = s;
         }
-
 
         #region Lobby Creation
         private string _inputedLobbyName;
@@ -58,7 +54,7 @@ namespace AlphaLobby.UI
 
         #endregion
 
-        public void Start()
+        private void Start()
         {
             _joinLobbyButton.onClick.AddListener(JoinLobby);
             _confirmLobbyCreateButton.onClick.AddListener(CreateLobby);
@@ -84,19 +80,29 @@ namespace AlphaLobby.UI
 
         private void PopulateTable()
         {
-            // foreach(Lobby lobby in LobbyManager.availableLobbies){
-            //     SpawnTableRow(lobby);
-            // }
+            foreach (Transform row in _lobbyTable.transform)
+            {
+                Destroy(row.gameObject);
+            }
+            foreach (Lobby lobby in _lobbyManager.availableLobbies)
+            {
+                SpawnTableRow(lobby);
+            }
         }
 
-        public void SpawnTableRow(string lobbyName, string lobbyHost, string lobbyPlayers)
+        public void SpawnTableRow(Lobby lobby)
         {
+            Debug.Log("Spawning Table Row");
             GameObject clone = Instantiate(
                 _tableRow,
                 _lobbyTable.transform.position,
-                Quaternion.identity,
+                _lobbyTable.transform.rotation,
                 _lobbyTable.transform
             );
+            var rowText = clone.GetComponentsInChildren<TextMeshProUGUI>();
+            rowText[0].text = lobby.Name;
+            rowText[1].text = "host";
+            rowText[2].text = (lobby.Players).ToString() + "/" + lobby.MaxPlayers;
         }
     }
 }

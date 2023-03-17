@@ -1,12 +1,9 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using Unity.Services.Core;
 using Unity.Services.Authentication;
 using Unity.Services.Lobbies;
 using Unity.Services.Lobbies.Models;
-using AlphaLobby;
 
 namespace AlphaLobby.Managers
 {
@@ -110,8 +107,8 @@ namespace AlphaLobby.Managers
             {
                 lobbies = (await LobbyService.Instance.QueryLobbiesAsync()).Results;
                 availableLobbies = lobbies;
-                onLobbyListFinishFetchEvent.Invoke();
                 Debug.Log("Found " + lobbies.Count + " available lobbies");
+                onLobbyListFinishFetchEvent.Invoke();
                 foreach (Lobby lobby in lobbies)
                 {
                     Debug.Log(lobby.Name + ", Code: " + lobby.LobbyCode);
@@ -156,6 +153,7 @@ namespace AlphaLobby.Managers
             try
             {
                 _joinedLobby = await LobbyService.Instance.JoinLobbyByCodeAsync(lobbyCode);
+                Debug.Log("Joined Lobby " + _joinedLobby.Name);
             }
             catch (LobbyServiceException exception)
             {
