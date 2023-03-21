@@ -3,8 +3,15 @@
 AlphaLobby is meant to be a plugin to manage all your multiplayer Lobby needs.
 It uses UnityServices SDK Scripting API to connect your project and is intended to provide a consistent Lobby Management with a built-in reusable and customizable UI.
 
-##Package Requirements:
+This branch focus on the implementation of the authentication services using the firebase services.
+## TODO
+* Connect project-l to unity
+* ~~Install firebase packages from Primeiros Passos[https://firebase.google.com/docs/auth/unity/start?hl=pt&authuser=0]~~
+* Initialize the DefaultInstance at Firebase.Atuh.FirebaseAuth
+
+## Package Requirements:
 Unity v2022.2.5f1
 Unity UI v1.0.0
 Authentication v2.0.4
 Lobby v1.0.3
+Firebase
