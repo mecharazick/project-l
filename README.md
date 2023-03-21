@@ -5,7 +5,8 @@ It uses UnityServices SDK Scripting API to connect your project and is intended 
 
 This branch focus on the implementation of the authentication services using the firebase services.
 ## TODO
-* ~~Install realm sdk from MongoDB~~
+* Install realm sdk from MongoDB
+* Generate User authentication models
 
 ## Package Requirements:
 Unity v2022.2.5f1
