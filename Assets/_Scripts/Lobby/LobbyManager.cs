@@ -4,10 +4,11 @@ using UnityEngine.Events;
 using Unity.Services.Authentication;
 using Unity.Services.Lobbies;
 using Unity.Services.Lobbies.Models;
+using AlphaLobby.Interfaces;
 
 namespace AlphaLobby.Managers
 {
-    public class LobbyManager : MonoBehaviour
+    public class LobbyManager : MonoBehaviour, ILobbyEvents
     {
         // #region LobbyManager Singleton Constructor Definition
         // private static LobbyManager _lobbyManagerSingleton;
@@ -24,7 +25,8 @@ namespace AlphaLobby.Managers
 
         // private LobbyManager() { }
         // #endregion
-        public UnityEvent onLobbyListFinishFetchEvent = new UnityEvent();
+        public static UnityEvent onLobbyJoin = new UnityEvent();
+        public static UnityEvent onLobbyList = new UnityEvent();
 
         [SerializeField]
         private Lobby _hostedLobby;
@@ -98,6 +100,7 @@ namespace AlphaLobby.Managers
             );
             _joinedLobby = lobby;
             _hostedLobby = _joinedLobby;
+            ListLobbies();
         }
 
         public async void ListLobbies()
@@ -108,7 +111,7 @@ namespace AlphaLobby.Managers
                 lobbies = (await LobbyService.Instance.QueryLobbiesAsync()).Results;
                 availableLobbies = lobbies;
                 Debug.Log("Found " + lobbies.Count + " available lobbies");
-                onLobbyListFinishFetchEvent.Invoke();
+                onLobbyList.Invoke();
                 foreach (Lobby lobby in lobbies)
                 {
                     Debug.Log(lobby.Name + ", Code: " + lobby.LobbyCode);
@@ -120,20 +123,20 @@ namespace AlphaLobby.Managers
             }
         }
 
-        private async void HandleLobbyHeartbeat()
+        private void HandleLobbyHeartbeat()
         {
-            if (_heartbeatTimer < 0)
+            if (_hostedLobby == null)
+                return;
+            if (_heartbeatTimer >= 0f)
             {
-                if (_hostedLobby != null)
-                {
-                    await LobbyService.Instance.GetLobbyAsync(_hostedLobby.Id);
-                }
-                float heartbeatTimerMax = 15 * 60f;
-                _heartbeatTimer = heartbeatTimerMax;
+                _heartbeatTimer -= Time.deltaTime;
             }
             else
             {
-                _heartbeatTimer -= Time.deltaTime;
+                LobbyService.Instance.SendHeartbeatPingAsync(_hostedLobby.Id);
+                Debug.Log("Sending Heartbeat to " + _hostedLobby.Name);
+                float heartbeatTimerMax = 29.9f;
+                _heartbeatTimer = heartbeatTimerMax;
             }
         }
         #endregion
@@ -147,12 +150,13 @@ namespace AlphaLobby.Managers
         }
         #endregion
 
-        #region
+        #region LobbyJoin
         public async void JoinLobbyByCode(string lobbyCode)
         {
             try
             {
                 _joinedLobby = await LobbyService.Instance.JoinLobbyByCodeAsync(lobbyCode);
+                onLobbyJoin.Invoke();
                 Debug.Log("Joined Lobby " + _joinedLobby.Name);
             }
             catch (LobbyServiceException exception)

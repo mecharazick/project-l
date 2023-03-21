@@ -456,7 +456,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1633918159}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: AlphaLobby.UI.LobbyManagerUI, Assembly-CSharp
         m_MethodName: SpawnTableRow
         m_Mode: 1
@@ -690,7 +690,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 362372404}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: AlphaLobby.UI.LobbyManagerUI, Assembly-CSharp
         m_MethodName: HandleChangeMaxPlayers
         m_Mode: 0
@@ -1477,6 +1477,7 @@ GameObject:
   m_Component:
   - component: {fileID: 241199877}
   - component: {fileID: 241199879}
+  - component: {fileID: 241199880}
   m_Layer: 0
   m_Name: LobbyManager
   m_TagString: Untagged
@@ -1511,9 +1512,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d665a2bf376707c46b002ea59d95e758, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  onLobbyListFinishFetchEvent:
-    m_PersistentCalls:
-      m_Calls: []
+--- !u!114 &241199880
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 241199876}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f12f344c0d155b478d512776dbca566, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _lobbyManager: {fileID: 241199879}
+  _lobbyTable: {fileID: 1909815926}
+  _tableRow: {fileID: 7788487037160913401, guid: 9b70b57c2564db641b2fef77174a5cd0,
+    type: 3}
+  _joinLobbyButton: {fileID: 709486270}
+  _confirmLobbyCreateButton: {fileID: 554027725}
 --- !u!1 &243386247
 GameObject:
   m_ObjectHideFlags: 0
@@ -1872,7 +1888,6 @@ GameObject:
   - component: {fileID: 362372403}
   - component: {fileID: 362372406}
   - component: {fileID: 362372405}
-  - component: {fileID: 362372404}
   m_Layer: 5
   m_Name: LobbyManagerUI
   m_TagString: Untagged
@@ -1903,24 +1918,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &362372404
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 362372402}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f12f344c0d155b478d512776dbca566, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _lobbyManager: {fileID: 241199879}
-  _lobbyTable: {fileID: 1835394121}
-  _tableRow: {fileID: 7788487037160913401, guid: 9b70b57c2564db641b2fef77174a5cd0,
-    type: 3}
-  _joinLobbyButton: {fileID: 0}
-  _confirmLobbyCreateButton: {fileID: 608275697}
 --- !u!114 &362372405
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2903,7 +2900,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1633918159}
+      - m_Target: {fileID: 241199880}
         m_TargetAssemblyTypeName: AlphaLobby.UI.LobbyManagerUI, Assembly-CSharp
         m_MethodName: HandleChangeLobbyName
         m_Mode: 0
@@ -4716,7 +4713,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 362372404}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: AlphaLobby.UI.LobbyManagerUI, Assembly-CSharp
         m_MethodName: HandleChangeLobbyName
         m_Mode: 0
@@ -7173,7 +7170,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 974325211}
   m_Direction: 2
   m_Value: 0
-  m_Size: 1
+  m_Size: 0.5
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -7686,7 +7683,6 @@ GameObject:
   - component: {fileID: 1633918156}
   - component: {fileID: 1633918158}
   - component: {fileID: 1633918157}
-  - component: {fileID: 1633918159}
   m_Layer: 5
   m_Name: LobbyListManagerUI
   m_TagString: Untagged
@@ -7757,24 +7753,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1633918155}
   m_CullTransparentMesh: 1
---- !u!114 &1633918159
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1633918155}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f12f344c0d155b478d512776dbca566, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _lobbyManager: {fileID: 241199879}
-  _lobbyTable: {fileID: 1909815926}
-  _tableRow: {fileID: 7788487037160913401, guid: 9b70b57c2564db641b2fef77174a5cd0,
-    type: 3}
-  _joinLobbyButton: {fileID: 709486270}
-  _confirmLobbyCreateButton: {fileID: 554027725}
 --- !u!1 &1671488820
 GameObject:
   m_ObjectHideFlags: 0
@@ -8338,7 +8316,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1633918159}
+      - m_Target: {fileID: 241199880}
         m_TargetAssemblyTypeName: AlphaLobby.UI.LobbyManagerUI, Assembly-CSharp
         m_MethodName: HandleChangeMaxPlayers
         m_Mode: 0
@@ -9445,8 +9423,8 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1633918159}
-        m_TargetAssemblyTypeName: AlphaLobby.UI.LobbyListManagerUI, Assembly-CSharp
+      - m_Target: {fileID: 241199880}
+        m_TargetAssemblyTypeName: AlphaLobby.UI.LobbyManagerUI, Assembly-CSharp
         m_MethodName: HandleLobbyCodeChange
         m_Mode: 0
         m_Arguments:
@@ -10040,7 +10018,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.0024872, y: 0}
+  m_AnchoredPosition: {x: 0.0025024414, y: 0}
   m_SizeDelta: {x: -0.0048828, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2041768228

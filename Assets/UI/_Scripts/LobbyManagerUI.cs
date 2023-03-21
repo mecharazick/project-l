@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Unity.Services.Lobbies.Models;
@@ -58,7 +59,7 @@ namespace AlphaLobby.UI
         {
             _joinLobbyButton.onClick.AddListener(JoinLobby);
             _confirmLobbyCreateButton.onClick.AddListener(CreateLobby);
-            _lobbyManager.onLobbyListFinishFetchEvent.AddListener(PopulateTable);
+            LobbyManager.onLobbyList.AddListener(PopulateTable);
         }
 
         private void JoinLobby()
@@ -75,7 +76,9 @@ namespace AlphaLobby.UI
                     + _inputedMaxPlayers
                     + " players."
             );
-            _lobbyManager.CreateLobby(_inputedLobbyName, _inputedMaxPlayers);
+            Dictionary<string, DataObject> data = new Dictionary<string, DataObject>();
+            data.Add("HostName", new DataObject(DataObject.VisibilityOptions.Public, AlphaLobby.Username));
+            _lobbyManager.CreateLobby(_inputedLobbyName, _inputedMaxPlayers, data);
         }
 
         private void PopulateTable()
@@ -100,9 +103,11 @@ namespace AlphaLobby.UI
                 _lobbyTable.transform
             );
             int connectedPlayers = lobby.MaxPlayers - lobby.AvailableSlots;
+            DataObject data;
+            lobby.Data.TryGetValue("HostName", out data);
             var rowText = clone.GetComponentsInChildren<TextMeshProUGUI>();
             rowText[0].text = lobby.Name;
-            rowText[1].text = "host";
+            rowText[1].text = data.Value;
             rowText[2].text = (connectedPlayers).ToString() + "/" + lobby.MaxPlayers;
         }
     }
