@@ -67,6 +67,11 @@ namespace AlphaLobby.UI
             _lobbyManager.JoinLobbyByCode(_lobbyCode);
         }
 
+        private void JoinLobby(string lobbyCode)
+        {
+            _lobbyManager.JoinLobbyByCode(lobbyCode);
+        }
+
         private void CreateLobby()
         {
             Debug.Log(
@@ -77,7 +82,10 @@ namespace AlphaLobby.UI
                     + " players."
             );
             Dictionary<string, DataObject> data = new Dictionary<string, DataObject>();
-            data.Add("HostName", new DataObject(DataObject.VisibilityOptions.Public, AlphaLobby.Username));
+            data.Add(
+                "HostName",
+                new DataObject(DataObject.VisibilityOptions.Public, AlphaLobby.Username)
+            );
             _lobbyManager.CreateLobby(_inputedLobbyName, _inputedMaxPlayers, data);
         }
 
@@ -85,7 +93,7 @@ namespace AlphaLobby.UI
         {
             foreach (Transform row in _lobbyTable.transform)
             {
-                Destroy(row.gameObject);
+                DespawnTableRow(row);
             }
             foreach (Lobby lobby in _lobbyManager.availableLobbies)
             {
@@ -109,6 +117,23 @@ namespace AlphaLobby.UI
             rowText[0].text = lobby.Name;
             rowText[1].text = data.Value;
             rowText[2].text = (connectedPlayers).ToString() + "/" + lobby.MaxPlayers;
+            clone
+                .GetComponent<Button>()
+                .onClick.AddListener(() =>
+                {
+                    JoinLobby(lobby.LobbyCode);
+                });
+        }
+
+        public void DespawnTableRow(Transform row)
+        {
+            Button rowButton;
+            row.TryGetComponent<Button>(out rowButton);
+            if (rowButton != null)
+            {
+                rowButton.onClick.RemoveAllListeners();
+            }
+            Destroy(row.gameObject);
         }
     }
 }
