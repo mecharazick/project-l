@@ -10,33 +10,17 @@ namespace AlphaLobby.Managers
 {
     public class LobbyManager : MonoBehaviour, ILobbyEvents
     {
-        // #region LobbyManager Singleton Constructor Definition
-        // private static LobbyManager _lobbyManagerSingleton;
-        // public static LobbyManager Instance
-        // {
-        //     get
-        //     {
-        //         if (_lobbyManagerSingleton == null)
-        //             _lobbyManagerSingleton = new LobbyManager();
-        //         return _lobbyManagerSingleton;
-        //     }
-        //     private set { _lobbyManagerSingleton = Instance; }
-        // }
+        public static UnityEvent<Lobby> onLobbyJoin = new UnityEvent<Lobby>();
 
-        // private LobbyManager() { }
-        // #endregion
-        public static UnityEvent onLobbyJoin = new UnityEvent();
-        public static UnityEvent onLobbyList = new UnityEvent();
+        public static UnityEvent<List<Lobby>> onLobbyList = new UnityEvent<List<Lobby>>();
 
-        [SerializeField]
-        private Lobby _hostedLobby;
+        private static Player _player;
 
-        [SerializeField]
-        private Lobby _joinedLobby;
+        private static Lobby _hostedLobby;
 
-        private float _heartbeatTimer = 0f;
+        private static Lobby _joinedLobby;
 
-        public List<Lobby> availableLobbies;
+        private static float _heartbeatTimer = 0f;
 
         public enum LobbyAvailability
         {
@@ -44,23 +28,35 @@ namespace AlphaLobby.Managers
             Private = 1
         };
 
-        private void Update()
+        public static void Initialize(string username)
         {
-            HandleLobbyHeartbeat();
+            _player = new Player(
+                id: AuthenticationService.Instance.PlayerId,
+                data: new Dictionary<string, PlayerDataObject>()
+                {
+                    {
+                        "PlayerName",
+                        new PlayerDataObject(
+                            visibility: PlayerDataObject.VisibilityOptions.Public,
+                            value: username
+                        )
+                    }
+                }
+            );
         }
 
         #region LobbyCreation
-        public void CreateLobby()
+        public static void CreateLobby()
         {
             CreateLobby("default", 4);
         }
 
-        public void CreateLobby(string lobbyName, int maxPlayers)
+        public static void CreateLobby(string lobbyName, int maxPlayers)
         {
             CreateLobby(lobbyName, maxPlayers, null);
         }
 
-        public void CreateLobby(
+        public static void CreateLobby(
             string lobbyName,
             int maxPlayers,
             Dictionary<string, DataObject> data
@@ -69,7 +65,7 @@ namespace AlphaLobby.Managers
             CreateLobby(lobbyName, maxPlayers, LobbyAvailability.Public, data);
         }
 
-        public async void CreateLobby(
+        public static async void CreateLobby(
             string lobbyName,
             int maxPlayers,
             LobbyAvailability lobbyAvailability,
@@ -77,22 +73,14 @@ namespace AlphaLobby.Managers
         )
         {
             CreateLobbyOptions options = new CreateLobbyOptions();
+
             options.IsPrivate =
                 (lobbyAvailability & LobbyAvailability.Private) == LobbyAvailability.Private;
-            options.Player = new Player(
-                id: AuthenticationService.Instance.PlayerId,
-                data: new Dictionary<string, PlayerDataObject>()
-                {
-                    {
-                        "PlayerName",
-                        new PlayerDataObject(
-                            visibility: PlayerDataObject.VisibilityOptions.Member,
-                            value: AlphaLobby.Username
-                        )
-                    }
-                }
-            );
+
+            options.Player = _player;
+
             options.Data = data;
+
             Lobby lobby = await LobbyService.Instance.CreateLobbyAsync(
                 lobbyName,
                 maxPlayers,
@@ -100,19 +88,21 @@ namespace AlphaLobby.Managers
             );
             _joinedLobby = lobby;
             _hostedLobby = _joinedLobby;
+            onLobbyJoin.Invoke(_joinedLobby);
             ListLobbies();
         }
 
-        public async void ListLobbies()
+        public static async void ListLobbies()
         {
-            List<Lobby> lobbies;
             try
             {
-                lobbies = (await LobbyService.Instance.QueryLobbiesAsync()).Results;
-                availableLobbies = lobbies;
-                Debug.Log("Found " + lobbies.Count + " available lobbies");
-                onLobbyList.Invoke();
-                foreach (Lobby lobby in lobbies)
+                QueryResponse response = await LobbyService.Instance.QueryLobbiesAsync();
+                List<Lobby> availableLobbies = response.Results;
+
+                Debug.Log("Found " + availableLobbies.Count + " available lobbies");
+
+                onLobbyList?.Invoke(availableLobbies);
+                foreach (Lobby lobby in availableLobbies)
                 {
                     Debug.Log(lobby.Name + ", Code: " + lobby.LobbyCode);
                 }
@@ -123,7 +113,7 @@ namespace AlphaLobby.Managers
             }
         }
 
-        private void HandleLobbyHeartbeat()
+        public static void HandleLobbyHeartbeat()
         {
             if (_hostedLobby == null)
                 return;
@@ -143,7 +133,7 @@ namespace AlphaLobby.Managers
 
         #region LobbyUpdate
 
-        public async void UpdateLobby()
+        public static async void UpdateLobby()
         {
             UpdateLobbyOptions options = new UpdateLobbyOptions();
             Lobby lobby = await LobbyService.Instance.UpdateLobbyAsync(_hostedLobby.Id, options);
@@ -151,13 +141,14 @@ namespace AlphaLobby.Managers
         #endregion
 
         #region LobbyJoin
-        public async void JoinLobbyByCode(string lobbyCode)
+        public static async void JoinLobbyByCode(string lobbyCode)
         {
             try
             {
                 _joinedLobby = await LobbyService.Instance.JoinLobbyByCodeAsync(lobbyCode);
-                onLobbyJoin.Invoke();
-                Debug.Log("Joined Lobby " + _joinedLobby.Name);
+                JoinLobbyByCodeOptions joinOptions = new JoinLobbyByCodeOptions();
+                joinOptions.Player = _player;
+                onLobbyJoin.Invoke(_joinedLobby);
             }
             catch (LobbyServiceException exception)
             {
